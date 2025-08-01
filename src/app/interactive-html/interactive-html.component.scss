@@ -1,0 +1,19 @@
+.interactive-container .clickable {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.clickable {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.clickable-word {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.clickable-word:hover {
+  color: #0056b3;
+}
