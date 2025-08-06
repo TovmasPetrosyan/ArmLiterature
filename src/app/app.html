@@ -7,21 +7,22 @@
         <h2>{{ chapter.chapter_title }}</h2>
 
         @for (section of chapter.u_obj; track section) {
-<!--          <div [innerHTML]="section.content"></div>-->
-          <app-interactive-html
-            [html]="section.content"
-            (showMeaning)="openMeaning($event)">
-          </app-interactive-html>
-<!--          <div [innerHTML]="section.know"></div>-->
-          <app-interactive-html
-            [html]="section.know"
-            (showMeaning)="openMeaning($event)">
-          </app-interactive-html>
-          @if (section.images?.length) {
-            <div>
-<!--              <h3>Նկարներ</h3>-->
 
-              @for (img of section.images; track img) {
+
+          <app-interactive-html
+            [html]="section.content.text"
+            (showMeaning)="openMeaning($event)">
+          </app-interactive-html>
+
+          <app-interactive-html
+            [html]="section.know.text"
+            (showMeaning)="openMeaning($event)">
+          </app-interactive-html>
+
+
+          @if (section.content.images?.length) {
+            <div>
+              @for (img of section.content.images; track img) {
                 <div>
                   <img [src]="img.path" [alt]="img.title" style="max-width: 300px; margin: 10px 0;" />
                   <p>{{ img.title }}</p>
@@ -29,16 +30,30 @@
               }
             </div>
           }
+
+          @if (section.know.images?.length) {
+            <div>
+              @for (img of section.know.images; track img) {
+                <div>
+                  <img [src]="img.path" [alt]="img.title" style="max-width: 300px; margin: 10px 0;" />
+                  <p>{{ img.title }}</p>
+                </div>
+              }
+            </div>
+          }
+
         }
       </div>
     }
+
+
     @if (lessonData.quiz?.length) {
       <div style="margin-top: 40px;">
         <h2>Հարցարան</h2>
-
+        <div [innerHTML]="lessonData.question"></div>
         @for (quiz of lessonData.quiz; track quiz) {
           <div class="quiz-item" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc;">
-            <div [innerHTML]="quiz.question"></div>
+
             <p><strong>{{ quiz.text }}</strong></p>
             <ul style="list-style-type: none; padding-left: 0;">
               @for (choice of quiz.cases; track choice) {
@@ -55,23 +70,19 @@
                 </li>
               }
             </ul>
-            @if (quiz.selected){
+
+            @if (quiz.selected) {
               <div>
-          <span
-            [style.color]="quiz.selected === quiz.answer ? 'green' : 'red'"
-          >
-            {{ quiz.selected === quiz.answer ? 'Ճիշտ է ✅' : 'Սխալ է ❌' }}
-          </span>
+                <span [style.color]="quiz.selected === quiz.answer ? 'green' : 'red'">
+                  {{ quiz.selected === quiz.answer ? 'Ճիշտ է ✅' : 'Սխալ է ❌' }}
+                </span>
               </div>
             }
-
           </div>
         }
       </div>
     }
-
   </div>
-
 }
 @if (modalText){
   <div class="modal">

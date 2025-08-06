@@ -20,20 +20,29 @@ export class InteractiveHtmlComponent implements OnChanges{
   }
 
   renderContent() {
-    const regex = /#\{(.*?)\|(.*?)\}#/g;
-    const parsed = this.html.replace(regex, (_m, key, value) => {
-      return `<span class="clickable" data-meaning="${value.trim()}">${key.trim()}</span>`;
-    });
-
-    const container = this.elRef.nativeElement.querySelector('.interactive-container');
-    container.innerHTML = parsed;
-
-    const words = container.querySelectorAll('.clickable');
-    words.forEach((el: any) => {
-      this.renderer.listen(el, 'click', () => {
-        const meaning = el.getAttribute('data-meaning');
-        this.showMeaning.emit(meaning);
+    if (!this.html) {
+      console.warn("HTML content is undefined or empty");
+      return;
+    }
+    const regex = /#\{(.*?)\|(.*?)}#/g;
+    console.log(this.html);
+    try {
+      const parsed = this.html.replace(regex, (_m, key, value) => {
+        return `<span class="clickable" data-meaning="${value.trim()}">${key.trim()}</span>`;
       });
-    });
+
+      const container = this.elRef.nativeElement.querySelector('.interactive-container');
+      container.innerHTML = parsed;
+
+      const words = container.querySelectorAll('.clickable');
+      words.forEach((el: any) => {
+        this.renderer.listen(el, 'click', () => {
+          const meaning = el.getAttribute('data-meaning');
+          this.showMeaning.emit(meaning);
+        });
+      });
+    } catch (error) {
+      console.error("Error while rendering HTML content:", error);
+    }
   }
 }

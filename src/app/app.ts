@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import { Data} from './services/data';
 import {InteractiveHtmlComponent} from './interactive-html/interactive-html.component';
+import {MyData} from './my-data/my-data-module';
 
 
 @Component({
@@ -12,7 +13,7 @@ import {InteractiveHtmlComponent} from './interactive-html/interactive-html.comp
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
-  lessonData: any;
+  lessonData: MyData | undefined;
   modalText: string | null = null;
   constructor(private dataService: Data) {}
 
@@ -24,6 +25,7 @@ export class App implements OnInit {
 
 
   openMeaning(text: string) {
+    console.log(text);
     this.modalText = text;
   }
   checkQuizAnswer(quizItem: any, selectedIndex: number) {
